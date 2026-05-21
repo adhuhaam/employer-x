@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiFPS App UI Preview</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #1a1a2e; font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; padding: 30px; }
+h1 { text-align: center; color: #fff; font-size: 28px; margin-bottom: 8px; }
+.subtitle { text-align: center; color: #8892b0; font-size: 14px; margin-bottom: 40px; }
+.phones { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+.phone-container { text-align: center; }
+.phone-label { color: #fff; font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+.phone-sublabel { color: #64ffda; font-size: 11px; margin-bottom: 12px; letter-spacing: 1px; text-transform: uppercase; }
+.phone {
+  width: 280px; height: 580px;
+  border-radius: 32px;
+  border: 3px solid #444;
+  overflow: hidden;
+  position: relative;
+  background: #fff;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.status-bar {
+  height: 28px; background: rgba(0,0,0,0.05);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; font-size: 10px; color: #333;
+}
+.notch { width: 80px; height: 18px; background: #222; border-radius: 0 0 12px 12px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); }
+
+/* ============ EMPLOYER APP ============ */
+.employer-screen { height: 100%; display: flex; flex-direction: column; background: #f5f7fa; }
+.employer-header {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5f8a 100%);
+  padding: 36px 16px 20px; color: white;
+}
+.employer-greeting { font-size: 11px; opacity: 0.8; }
+.employer-name { font-size: 18px; font-weight: 700; margin-top: 2px; }
+.employer-company { font-size: 11px; opacity: 0.7; margin-top: 2px; }
+.employer-logo-area { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.employer-logo-area img { width: 36px; height: 36px; border-radius: 8px; }
+.employer-features {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px; padding: 16px; margin-top: -10px;
+}
+.feature-card {
+  background: white; border-radius: 12px; padding: 14px 8px;
+  text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.feature-card img { width: 28px; height: 28px; margin-bottom: 6px; }
+.feature-card .label { font-size: 9px; color: #555; font-weight: 500; }
+.employer-tabs {
+  display: flex; justify-content: space-around;
+  background: white; padding: 8px 0 6px;
+  border-top: 1px solid #eee; margin-top: auto;
+}
+.tab { text-align: center; }
+.tab img { width: 20px; height: 20px; opacity: 0.4; }
+.tab.active img { opacity: 1; }
+.tab .tab-label { font-size: 8px; color: #999; margin-top: 2px; }
+.tab.active .tab-label { color: #1e3a5f; font-weight: 600; }
+.employer-card {
+  background: white; margin: 0 16px 8px; border-radius: 10px;
+  padding: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  display: flex; align-items: center; gap: 10px;
+}
+.employer-card .dot { width: 8px; height: 8px; border-radius: 50%; }
+.employer-card .text { flex: 1; }
+.employer-card .title { font-size: 11px; font-weight: 600; color: #333; }
+.employer-card .desc { font-size: 9px; color: #888; margin-top: 2px; }
+.employer-card .badge { font-size: 9px; padding: 2px 8px; border-radius: 10px; font-weight: 500; }
+
+/* ============ WORKER APP ============ */
+.worker-screen { height: 100%; display: flex; flex-direction: column; background: #f0f4f8; }
+.worker-header {
+  background: linear-gradient(135deg, #0d47a1 0%, #1565c0 50%, #42a5f5 100%);
+  padding: 36px 16px 16px; color: white; position: relative;
+}
+.worker-header-row { display: flex; align-items: center; justify-content: space-between; }
+.worker-avatar { width: 36px; height: 36px; border-radius: 50%; background: #fff3; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.worker-greeting { font-size: 11px; opacity: 0.8; }
+.worker-name { font-size: 16px; font-weight: 700; }
+.worker-notif { width: 24px; height: 24px; opacity: 0.8; }
+.worker-banner { width: calc(100% - 32px); margin: 8px 16px; border-radius: 10px; height: 80px; object-fit: cover; }
+.worker-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 8px; padding: 12px 16px;
+}
+.worker-item { text-align: center; background: white; border-radius: 10px; padding: 10px 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.worker-item img { width: 22px; height: 22px; margin-bottom: 4px; }
+.worker-item .label { font-size: 8px; color: #555; }
+.worker-section-title { font-size: 11px; font-weight: 600; color: #333; padding: 4px 16px; }
+.worker-list-item {
+  background: white; margin: 0 16px 6px; border-radius: 8px;
+  padding: 10px 12px; display: flex; align-items: center; gap: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.worker-list-item .icon-circle { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.worker-list-item .info { flex: 1; }
+.worker-list-item .info .t { font-size: 10px; font-weight: 600; color: #333; }
+.worker-list-item .info .s { font-size: 8px; color: #888; }
+.worker-tabs {
+  display: flex; justify-content: space-around;
+  background: white; padding: 8px 0 6px;
+  border-top: 1px solid #eee; margin-top: auto;
+}
+
+/* ============ RA APP ============ */
+.ra-screen { height: 100%; display: flex; flex-direction: column; background: #f5f7fa; }
+.ra-header {
+  background: linear-gradient(135deg, #004d40 0%, #00796b 100%);
+  padding: 36px 16px 16px; color: white;
+}
+.ra-header-row { display: flex; align-items: center; justify-content: space-between; }
+.ra-avatar { width: 36px; height: 36px; border-radius: 50%; background: #fff3; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.ra-greeting { font-size: 11px; opacity: 0.8; }
+.ra-name { font-size: 16px; font-weight: 700; }
+.ra-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px; padding: 14px 16px;
+}
+.ra-card {
+  background: white; border-radius: 12px; padding: 14px 8px;
+  text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.ra-card img { width: 26px; height: 26px; margin-bottom: 6px; }
+.ra-card .label { font-size: 9px; color: #555; font-weight: 500; }
+.ra-tabs {
+  display: flex; justify-content: space-around;
+  background: white; padding: 8px 0 6px;
+  border-top: 1px solid #eee; margin-top: auto;
+}
+.ra-list-item {
+  background: white; margin: 0 16px 6px; border-radius: 8px;
+  padding: 10px 12px; display: flex; align-items: center; gap: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.ra-list-item .icon-circle { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.ra-list-item .info { flex: 1; }
+.ra-list-item .info .t { font-size: 10px; font-weight: 600; color: #333; }
+.ra-list-item .info .s { font-size: 8px; color: #888; }
+.ra-list-item .badge { font-size: 8px; padding: 2px 6px; border-radius: 8px; }
+
+/* LOGIN SCREENS */
+.login-screen { height: 100%; display: flex; flex-direction: column; position: relative; }
+.login-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+.login-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.login-content { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; padding: 0 24px; }
+.login-logo { width: 80px; margin: 70px auto 10px; }
+.login-title { text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.login-subtitle { text-align: center; font-size: 11px; margin-bottom: 30px; }
+.login-input {
+  width: 100%; padding: 10px 14px; border-radius: 8px;
+  border: 1px solid #ddd; font-size: 12px; margin-bottom: 10px;
+  background: rgba(255,255,255,0.9);
+}
+.login-btn {
+  width: 100%; padding: 12px; border-radius: 8px;
+  border: none; font-size: 13px; font-weight: 600;
+  cursor: pointer; margin-top: 8px;
+}
+.login-footer { margin-top: auto; text-align: center; padding-bottom: 20px; font-size: 10px; }
+</style>
+</head>
+<body>
+
+<h1>MiFPS App Suite — UI Preview</h1>
+<p class="subtitle">Reconstructed from APK assets • Maldives Integrated Foreign Placement System</p>
+
+<!-- ========== ROW 1: LOGIN SCREENS ========== -->
+<p style="text-align:center; color:#64ffda; font-size:13px; margin-bottom: 20px; letter-spacing: 2px;">LOGIN SCREENS</p>
+<div class="phones">
+
+  <!-- EMPLOYER LOGIN -->
+  <div class="phone-container">
+    <div class="phone-label">MiFPS Employer</div>
+    <div class="phone-sublabel">com.bestinet.mifps_employer</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="login-screen">
+        <div class="login-bg" style="background: linear-gradient(180deg, #1a237e 0%, #283593 40%, #3949ab 100%);"></div>
+        <div class="login-content" style="color: white;">
+          <img src="employer_logo_bg.png" class="login-logo" style="width:100px;">
+          <div class="login-title" style="color:white;">Welcome Back</div>
+          <div class="login-subtitle" style="color: rgba(255,255,255,0.7);">Sign in to your employer account</div>
+          <input class="login-input" placeholder="Email / NID Number" readonly>
+          <input class="login-input" type="password" placeholder="Password" readonly>
+          <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
+            <div style="width:12px;height:12px;border:1px solid #ccc;border-radius:3px;background:white;"></div>
+            <span style="font-size:10px; color:rgba(255,255,255,0.7);">Remember me</span>
+          </div>
+          <button class="login-btn" style="background: #42a5f5; color: white;">Sign In</button>
+          <div style="text-align:center; margin-top:12px; font-size:10px; color:rgba(255,255,255,0.6);">Forgot Password?</div>
+          <div class="login-footer" style="color:rgba(255,255,255,0.5);">Powered by Bestinet Sdn Bhd<br>Privacy Policy • Terms of Use</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKER LOGIN -->
+  <div class="phone-container">
+    <div class="phone-label">MiFPS Worker</div>
+    <div class="phone-sublabel">com.bestinet.mifps_worker</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="login-screen">
+        <div class="login-bg" style="background: linear-gradient(180deg, #0d47a1 0%, #1565c0 50%, #e3f2fd 100%);"></div>
+        <div class="login-content">
+          <img src="mifps_logo.png" class="login-logo">
+          <div class="login-title" style="color:white;">MiFPS Worker</div>
+          <div class="login-subtitle" style="color: rgba(255,255,255,0.8);">Foreign Worker Portal</div>
+          <input class="login-input" placeholder="NID / National ID Number" readonly>
+          <input class="login-input" type="password" placeholder="Password" readonly>
+          <button class="login-btn" style="background: #1565c0; color: white;">Sign In with OAuth</button>
+          <div style="text-align:center; margin-top:10px;">
+            <div style="background:rgba(255,255,255,0.15); border-radius:8px; padding:8px; margin-top:6px;">
+              <img src="captcha_bg.png" style="width:80%; border-radius:4px; opacity:0.7;">
+            </div>
+          </div>
+          <div class="login-footer" style="color:rgba(0,0,0,0.4);">OAuth 2.0 + PKCE • mifps.bestinet.com</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RA LOGIN -->
+  <div class="phone-container">
+    <div class="phone-label">MiFPS RA</div>
+    <div class="phone-sublabel">com.bestinet.mifps_ra</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="login-screen">
+        <div class="login-bg" style="background: linear-gradient(180deg, #004d40 0%, #00695c 50%, #e0f2f1 100%);"></div>
+        <div class="login-content">
+          <img src="mifps_logo.png" class="login-logo">
+          <div class="login-title" style="color:white;">MiFPS RA</div>
+          <div class="login-subtitle" style="color: rgba(255,255,255,0.8);">Registration Agent Portal</div>
+          <input class="login-input" placeholder="Agent ID / Email" readonly>
+          <input class="login-input" type="password" placeholder="Password" readonly>
+          <button class="login-btn" style="background: #00796b; color: white;">Sign In with OAuth</button>
+          <div class="login-footer" style="color:rgba(0,0,0,0.4);">OAuth 2.0 + PKCE • mifps.bestinet.com</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="height: 50px;"></div>
+
+<!-- ========== ROW 2: HOME / DASHBOARD SCREENS ========== -->
+<p style="text-align:center; color:#64ffda; font-size:13px; margin-bottom: 20px; letter-spacing: 2px;">HOME / DASHBOARD SCREENS</p>
+<div class="phones">
+
+  <!-- EMPLOYER HOME -->
+  <div class="phone-container">
+    <div class="phone-label">Employer — Dashboard</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="employer-screen">
+        <div class="employer-header">
+          <div class="employer-logo-area">
+            <img src="employer_icon.png">
+            <div>
+              <div class="employer-greeting">Good Morning,</div>
+              <div class="employer-name">Ahmed Rasheed</div>
+              <div class="employer-company">Island Resort Pvt Ltd</div>
+            </div>
+          </div>
+        </div>
+        <div class="employer-features">
+          <div class="feature-card">
+            <img src="candidate_icon.png">
+            <div class="label">Candidates</div>
+          </div>
+          <div class="feature-card">
+            <img src="legalization_icon.png">
+            <div class="label">Legalization</div>
+          </div>
+          <div class="feature-card">
+            <img src="payment_icon.png">
+            <div class="label">Payments</div>
+          </div>
+          <div class="feature-card">
+            <img src="qr_code_icon.png">
+            <div class="label">QR Scan</div>
+          </div>
+          <div class="feature-card">
+            <div style="font-size:22px; margin-bottom:6px;">🟢</div>
+            <div class="label">Whitelist</div>
+          </div>
+          <div class="feature-card">
+            <div style="font-size:22px; margin-bottom:6px;">🔴</div>
+            <div class="label">Blacklist</div>
+          </div>
+        </div>
+        <div class="employer-card">
+          <div class="dot" style="background: #4caf50;"></div>
+          <div class="text">
+            <div class="title">Muhammad Ali</div>
+            <div class="desc">Work Permit #WP-2025-0441 • Active</div>
+          </div>
+          <div class="badge" style="background:#e8f5e9; color:#2e7d32;">Active</div>
+        </div>
+        <div class="employer-card">
+          <div class="dot" style="background: #ff9800;"></div>
+          <div class="text">
+            <div class="title">Aisha Rahman</div>
+            <div class="desc">Work Permit #WP-2025-0398 • Pending</div>
+          </div>
+          <div class="badge" style="background:#fff3e0; color:#e65100;">Pending</div>
+        </div>
+        <div class="employer-card">
+          <div class="dot" style="background: #f44336;"></div>
+          <div class="text">
+            <div class="title">Kamal Hassan</div>
+            <div class="desc">Work Permit #WP-2024-0712 • Expired</div>
+          </div>
+          <div class="badge" style="background:#ffebee; color:#c62828;">Expired</div>
+        </div>
+        <div class="employer-tabs">
+          <div class="tab active"><img src="home_tab.png"><div class="tab-label">Home</div></div>
+          <div class="tab"><img src="features_tab.png"><div class="tab-label">Features</div></div>
+          <div class="tab"><img src="profile_tab.png"><div class="tab-label">Profile</div></div>
+          <div class="tab"><img src="settings_tab.png"><div class="tab-label">Settings</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKER HOME -->
+  <div class="phone-container">
+    <div class="phone-label">Worker — Home</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="worker-screen">
+        <div class="worker-header">
+          <div class="worker-header-row">
+            <div>
+              <div class="worker-greeting">Welcome back,</div>
+              <div class="worker-name">Raju Sharma</div>
+            </div>
+            <div class="worker-avatar">👤</div>
+          </div>
+        </div>
+        <div style="margin:8px 16px; border-radius:10px; overflow:hidden; height:72px; background: linear-gradient(90deg, #1565c0, #42a5f5); display:flex; align-items:center; padding: 0 16px;">
+          <div style="color:white;">
+            <div style="font-size:12px; font-weight:700;">Your ID Card is Ready</div>
+            <div style="font-size:9px; opacity:0.8; margin-top:2px;">Tap to view your digital worker ID</div>
+          </div>
+        </div>
+        <div class="worker-grid">
+          <div class="worker-item"><img src="home_icon.png"><div class="label">Home</div></div>
+          <div class="worker-item"><img src="bag_icon.png"><div class="label">Jobs</div></div>
+          <div class="worker-item"><img src="id_card.png"><div class="label">ID Card</div></div>
+          <div class="worker-item"><img src="chats_icon.png"><div class="label">Chats</div></div>
+          <div class="worker-item"><img src="credit_card.png"><div class="label">Salary</div></div>
+          <div class="worker-item"><img src="task_icon.png"><div class="label">Tasks</div></div>
+          <div class="worker-item"><img src="buildings.png"><div class="label">Employer</div></div>
+          <div class="worker-item"><img src="award.png"><div class="label">Awards</div></div>
+        </div>
+        <div class="worker-section-title">Recent Activity</div>
+        <div class="worker-list-item">
+          <div class="icon-circle" style="background:#e3f2fd;">💼</div>
+          <div class="info"><div class="t">Employment Verified</div><div class="s">Island Resort Pvt Ltd • 2 hours ago</div></div>
+        </div>
+        <div class="worker-list-item">
+          <div class="icon-circle" style="background:#e8f5e9;">✅</div>
+          <div class="info"><div class="t">Biometric Enrolled</div><div class="s">Fingerprint + Face • Yesterday</div></div>
+        </div>
+        <div class="worker-list-item">
+          <div class="icon-circle" style="background:#fff3e0;">📄</div>
+          <div class="info"><div class="t">Document Scanned</div><div class="s">Passport OCR completed • 3 days ago</div></div>
+        </div>
+        <div class="worker-tabs">
+          <div class="tab active"><img src="home_icon.png"><div class="tab-label">Home</div></div>
+          <div class="tab"><img src="bag_icon.png"><div class="tab-label">Jobs</div></div>
+          <div class="tab"><img src="chats_icon.png"><div class="tab-label">Chat</div></div>
+          <div class="tab"><img src="profile_icon.png"><div class="tab-label">Profile</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RA HOME -->
+  <div class="phone-container">
+    <div class="phone-label">RA — Dashboard</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="ra-screen">
+        <div class="ra-header">
+          <div class="ra-header-row">
+            <div>
+              <div class="ra-greeting">Registration Agent</div>
+              <div class="ra-name">Fathimath Nazla</div>
+            </div>
+            <div class="ra-avatar">👤</div>
+          </div>
+        </div>
+        <div class="ra-grid">
+          <div class="ra-card">
+            <img src="id_card.png">
+            <div class="label">Register</div>
+          </div>
+          <div class="ra-card">
+            <img src="qr_code_icon.png">
+            <div class="label">QR Scan</div>
+          </div>
+          <div class="ra-card">
+            <img src="profile_icon.png">
+            <div class="label">Workers</div>
+          </div>
+          <div class="ra-card">
+            <div style="font-size:22px; margin-bottom:6px;">🔍</div>
+            <div class="label">Search</div>
+          </div>
+          <div class="ra-card">
+            <img src="buildings.png">
+            <div class="label">Employers</div>
+          </div>
+          <div class="ra-card">
+            <img src="task_icon.png">
+            <div class="label">Tasks</div>
+          </div>
+        </div>
+        <div style="font-size:11px; font-weight:600; color:#333; padding:4px 16px;">Pending Registrations</div>
+        <div class="ra-list-item">
+          <div class="icon-circle" style="background:#fff3e0; font-size:14px;">📋</div>
+          <div class="info"><div class="t">Ahmed Farooq — Passport Scan</div><div class="s">Awaiting biometric enrollment</div></div>
+          <div class="badge" style="background:#fff3e0; color:#e65100; font-size:8px;">Pending</div>
+        </div>
+        <div class="ra-list-item">
+          <div class="icon-circle" style="background:#e8f5e9; font-size:14px;">✅</div>
+          <div class="info"><div class="t">Maria Santos — Complete</div><div class="s">All biometrics enrolled</div></div>
+          <div class="badge" style="background:#e8f5e9; color:#2e7d32; font-size:8px;">Done</div>
+        </div>
+        <div class="ra-list-item">
+          <div class="icon-circle" style="background:#e3f2fd; font-size:14px;">👆</div>
+          <div class="info"><div class="t">Li Wei — Fingerprint</div><div class="s">4-finger capture needed</div></div>
+          <div class="badge" style="background:#e3f2fd; color:#1565c0; font-size:8px;">In Progress</div>
+        </div>
+        <div class="ra-list-item">
+          <div class="icon-circle" style="background:#fce4ec; font-size:14px;">📷</div>
+          <div class="info"><div class="t">Nimal Perera — Face Capture</div><div class="s">Face enrollment pending</div></div>
+          <div class="badge" style="background:#fce4ec; color:#c62828; font-size:8px;">Required</div>
+        </div>
+        <div class="ra-tabs">
+          <div class="tab active"><img src="home_icon.png"><div class="tab-label">Home</div></div>
+          <div class="tab"><img src="qr_code_icon.png"><div class="tab-label">Scan</div></div>
+          <div class="tab"><img src="task_icon.png"><div class="tab-label">Tasks</div></div>
+          <div class="tab"><img src="settings_icon.png"><div class="tab-label">Settings</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="height: 30px;"></div>
+<p style="text-align:center; color:#444; font-size:10px;">UI mockups reconstructed from extracted APK assets (icons, images, fonts, layouts) • Not actual screenshots</p>
+
+</body>
+</html>
